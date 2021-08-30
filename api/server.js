@@ -57,11 +57,11 @@ server.put("/api/users/:id", async (req, res) => {
   const { body } = req;
   try {
     const updatedUser = await User.update(id, body);
-    if (!id) {
+    if (!updatedUser) {
       res.status(404).json({
         message: "The user with the specified ID does not exist",
       });
-    } else if (!body) {
+    } else if (!body.name || !body.bio) {
       res.status(400).json({
         message: "Please provide name and bio for the user",
       });

@@ -12,10 +12,26 @@ server.get("/api/users", async (req, res) => {
     res.json(users);
   } catch (err) {
     res.status(500).json({
-      message: "ERROR: 500. Internal Server Error",
+      message: "Unable to retrieve user list.",
       error: err.message,
     });
   }
 });
 
-module.exports = server; // EXPORT YOUR SERVER instead of {}
+server.get("/api/users/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    !user
+      ? res.status(404).json({
+          message: `No user found by id: ${req.params.id}`,
+        })
+      : res.json(user);
+  } catch (err) {
+    res.status(500).json({
+      message: "Unable to retrieve specified user.",
+      error: err.message,
+    });
+  }
+});
+
+module.exports = server;

@@ -52,4 +52,22 @@ server.post("/api/users", async (req, res) => {
   }
 });
 
+server.put("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  try {
+    const updatedUser = await User.update(id, body);
+    !updatedUser
+      ? res.status(404).json({
+          message: `No user found with the id of ${id}`,
+        })
+      : res.json(updatedUser);
+  } catch (err) {
+    res.status(500).json({
+      message: "Unable to update any user.",
+      error: err.message,
+    });
+  }
+});
+
 module.exports = server;

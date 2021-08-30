@@ -34,4 +34,22 @@ server.get("/api/users/:id", async (req, res) => {
   }
 });
 
+server.post("/api/users", async (req, res) => {
+  try {
+    if (!req.body.name || !req.body.bio) {
+      res.status(500).json({
+        message: "Name and bio are required.",
+      });
+    } else {
+      const newUser = await User.insert(req.body);
+      res.status(201).json(newUser);
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Unable to add new user to the database.",
+      error: err.message,
+    });
+  }
+});
+
 module.exports = server;

@@ -38,7 +38,7 @@ server.post("/api/users", async (req, res) => {
   try {
     if (!req.body.name || !req.body.bio) {
       res.status(400).json({
-        message: "Name and bio are required.",
+        message: "provide name and bio",
       });
     } else {
       const newUser = await User.insert(req.body);
